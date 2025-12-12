@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.M.E.N. | The Black Hand - Command Nexus Access</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:Awght@100..900&family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #05070a; /* Ultra-dark base */
+            overflow-x: hidden; /* Prevent horizontal scroll from glitch effect */
+        }
+        /* Fira Code for all monospace/data blocks */
+        .font-data {
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Neon Glow Base */
+        .neon-text {
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.6), 0 0 15px rgba(0, 255, 255, 0.4);
+        }
+        .fuchsia-neon {
+            text-shadow: 0 0 5px #ff00ff, 0 0 15px #cc00cc;
+        }
+        
+        /* Holographic Container Effect */
+        .holographic-panel {
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2), 0 0 30px rgba(255, 0, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            background-color: #0d1117;
+            backdrop-filter: blur(2px);
+        }
+
+        /* Animated Title Border */
+        @keyframes border-glow {
+            0% { transform: scaleX(0); }
+            50% { transform: scaleX(1); }
+            100% { transform: scaleX(0); }
+        }
+        .title-container {
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        .title-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #06b6d4, #ff00ff, transparent);
+            transform: translateX(-50%);
+            opacity: 0.7;
+        }
+        .title-container.animated::after {
+            animation: border-glow 6s infinite ease-in-out;
+        }
+
+        /* Blinking Cursor Animation */
+        @keyframes cursor-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .cursor-blink::after {
+            content: '_';
+            display: inline-block;
+            animation: cursor-blink 0.8s infinite step-end;
+            margin-left: 2px;
+        }
+
+        /* Custom Glitch Effect for High-Security Title */
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); opacity: 0.8; }
+            40% { transform: translate(-3px, -3px); opacity: 0.8; }
+            60% { transform: translate(3px, 3px); opacity: 0.8; }
+            80% { transform: translate(3px, -3px); opacity: 0.8; }
+            100% { transform: translate(0); opacity: 1; }
+        }
+        .glitch-text {
+            animation: glitch 1.5s infinite linear alternate-reverse;
+            color: #ff00ff; /* Fuchsia base color */
+        }
+
+        /* Subtle Animated Background Scanlines */
+        @keyframes scanline {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 50px; }
+        }
+        .bg-scanline {
+            background-image: repeating-linear-gradient(
+                0deg,
+                rgba(255, 255, 255, 0.03),
+                rgba(255, 255, 255, 0.03) 1px,
+                transparent 1px,
+                transparent 5px
+            );
+            background-size: 100% 50px;
+            animation: scanline 10s linear infinite;
+        }
+
+        /* Redaction Style */
+        .redacted {
+            background-color: #880000;
+            color: #880000;
+            user-select: none;
+            cursor: help;
+            transition: background-color 0.3s;
+            padding: 0 2px;
+        }
+        .redacted:hover {
+            background-color: #ff00ff; /* Fuchsia highlight on hover */
+            color: #ff00ff;
+        }
+        
+        /* Custom SVG Styles for Augmentation Diagram */
+        .pipe { fill: none; stroke: url(#cyan-grad); stroke-width: 5; }
+        .stage { fill: #1f2937; stroke: #374151; stroke-width: 2; }
+        .stage-text { fill: #f3f4f6; font-family: 'Fira Code', monospace; font-size: 20px; }
+        .asset-core { fill: #c026d3; opacity: 0.8; stroke: #e879f9; stroke-width: 2; }
+
+        /* Custom Scrollbar Styling (Webkit only for cross-browser compatibility) */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0d1117;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0891b2;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen bg-scanline">
+
+    <!-- Header & Navigation -->
+    <header class="p-4 border-b-2 border-fuchsia-700/50 shadow-xl sticky top-0 z-10 bg-gray-900/90 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <!-- Logo -->
+            <div class="text-2xl font-extrabold tracking-widest text-fuchsia-400 fuchsia-neon font-data">
+                A.M.E.N. <span class="text-xs text-gray-500 block -mt-1 font-inter">THE BLACK HAND</span>
+            </div>
+            
+            <!-- Hamburger Button (Visible on mobile/small screens) -->
+            <button id="menu-button" class="md:hidden p-2 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 text-fuchsia-400">
+                <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+                <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+
+            <!-- Desktop Navigation (Visible on md and larger) -->
+            <nav class="space-x-4 hidden md:block">
+                <a href="#mission" class="text-gray-300 hover:text-cyan-400 transition font-data">Doctrine</a>
+                <a href="#code" class="text-gray-300 hover:text-fuchsia-400 transition font-data">Tenets</a>
+                <a href="#divisions" class="text-gray-300 hover:text-cyan-400 transition font-data">Divisions</a>
+                <a href="#auc" class="text-gray-300 hover:text-fuchsia-400 transition font-data">AUC Protocol</a>
+                <a href="#forge" class="text-gray-300 hover:text-cyan-400 transition font-data">Forge Network</a>
+                <a href="#augmentation" class="text-gray-300 hover:text-fuchsia-400 transition font-data">Augmentation</a>
+                <a href="#hydra-net" class="text-gray-300 hover:text-cyan-400 transition font-data">Hydra-Net</a>
+                <a href="#command" class="px-4 py-2 bg-fuchsia-600 rounded-full font-bold hover:bg-fuchsia-500 transition shadow-lg fuchsia-neon font-data">ACCESS PROTOCOL</a>
+            </nav>
+        </div>
+        
+        <!-- Mobile Menu (Hidden by default, shown via JS on mobile) -->
+        <nav id="mobile-menu" class="hidden md:hidden mt-2 border-t border-cyan-800/50 py-2">
+            <div class="flex flex-col space-y-2 font-data">
+                <a href="#mission" class="p-2 text-gray-300 hover:text-cyan-400 hover:bg-gray-800 rounded-md transition">Doctrine</a>
+                <a href="#code" class="p-2 text-gray-300 hover:text-fuchsia-400 hover:bg-gray-800 rounded-md transition">Tenets</a>
+                <a href="#divisions" class="p-2 text-gray-300 hover:text-cyan-400 hover:bg-gray-800 rounded-md transition">Divisions</a>
+                <a href="#auc" class="p-2 text-gray-300 hover:text-fuchsia-400 hover:bg-gray-800 rounded-md transition">AUC Protocol</a>
+                <a href="#forge" class="p-2 text-gray-300 hover:text-cyan-400 hover:bg-gray-800 rounded-md transition">Forge Network</a>
+                <a href="#augmentation" class="p-2 text-gray-300 hover:text-fuchsia-400 hover:bg-gray-800 rounded-md transition">Augmentation</a>
+                <a href="#hydra-net" class="p-2 text-gray-300 hover:text-cyan-400 hover:bg-gray-800 rounded-md transition">Hydra-Net</a>
+                <a href="#command" class="p-2 mt-1 bg-fuchsia-700 text-white rounded-md text-center font-semibold hover:bg-fuchsia-600 transition">ACCESS PROTOCOL</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-4 md:p-8">
+
+        <!-- Hero Section -->
+        <section class="text-center py-20 md:py-32 bg-gray-900/50 rounded-xl shadow-2xl border-2 border-fuchsia-700/50 mb-16 holographic-panel">
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-black mb-4 tracking-tighter">
+                <span class="text-white">TO MASTER THE ANOMALY</span>
+                <span class="text-fuchsia-400 fuchsia-neon block mt-2 font-data cursor-blink">IS TO MASTER THE FUTURE.</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto font-data">
+                ACTUALIZATION, MANAGEMENT, AND EXPLOITATION OF NOVELTY. WE REFUSE CONTAINMENT.
+            </p>
+            <div class="mt-8">
+                <a href="#mission" class="inline-block px-8 py-3 text-lg font-bold bg-cyan-700 rounded-lg hover:bg-cyan-600 transition shadow-xl uppercase tracking-wider neon-text holographic-panel font-data">
+                    INITIATE MANDATE REVIEW
+                </a>
+            </div>
+        </section>
+
+        <!-- Mission Statement & Conflict -->
+        <section id="mission" class="grid md:grid-cols-2 gap-12 items-center py-16">
+            <!-- Utilization Pillar -->
+            <div class="p-6 rounded-2xl shadow-xl border-t-4 border-cyan-500 holographic-panel">
+                <h2 class="text-3xl font-bold text-cyan-400 mb-4 flex items-center neon-text">
+                    <!-- SVG: Progress Arrow -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                    Our Doctrine: Utilization
+                </h2>
+                <p class="text-gray-300 text-lg leading-relaxed font-data">
+                    We believe the anomalous is not a threat to be feared, but a resource to be mastered. We capture **Assets** to reverse-engineer their principles, integrate their power, and rapidly advance global technology. The Veil is a cage built by cowards.
+                </p>
+            </div>
+
+            <!-- Foundation Contrast (The Enemy) -->
+            <div class="p-6 rounded-2xl shadow-xl border-t-4 border-fuchsia-500 holographic-panel">
+                <h2 class="text-3xl font-bold text-fuchsia-400 mb-4 flex items-center fuchsia-neon">
+                    <!-- SVG: Broken Shackle -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0-1.552-.863-2.906-2.2-3.64l-3.3-1.74a3.01 3.01 0 00-3.5 5.25L9.5 12M12 11h2c1.552 0 2.906.863 3.64 2.2l1.74 3.3a3.01 3.01 0 00-5.25 3.5L12 11z"/></svg>
+                    The Enemy: Containment
+                </h2>
+                <p class="text-gray-300 text-lg leading-relaxed font-data">
+                    The Foundation clings to obsolete concepts of "Containment" and "Protection." They hoard reality-bending knowledge and resources. They are the primary obstacle to our future, and they must be dismantled.
+                </p>
+            </div>
+        </section>
+
+        <!-- The Five Tenets of Actualization (Code of Ethics) -->
+        <section id="code" class="py-16">
+            <h2 class="text-4xl font-bold text-center mb-12 text-white pb-4 fuchsia-neon font-data title-container animated">
+                THE FIVE TENETS OF ACTUALIZATION
+            </h2>
+            <div class="max-w-4xl mx-auto p-8 rounded-xl shadow-2xl border-2 border-fuchsia-700/50 holographic-panel">
+                <p class="text-fuchsia-400 italic mb-6 text-center font-data">
+                    "Necessity is the highest law. Progress is the highest necessity." - The Apex
+                </p>
+                <ol class="space-y-6 text-lg font-data">
+                    <li class="flex items-start">
+                        <span class="text-cyan-400 font-extrabold text-2xl mr-4 neon-text">1.</span>
+                        <p><strong class="text-white">Utility Above Life:</strong> The value of any life is measured solely by its potential utility to the Doctrine of Progress. Personnel casualties are acceptable losses.</p>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-cyan-400 font-extrabold text-2xl mr-4 neon-text">2.</span>
+                        <p><strong class="text-white">The Veil is a Lie:</strong> Attempts by rivals to maintain secrecy are hostile. Exploit their efforts to normalize anomalies for the public good.</p>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-cyan-400 font-extrabold text-2xl mr-4 neon-text">3.</span>
+                        <p><strong class="text-white">Adapt or Perish:</strong> Augmentation is mandatory. Refusal to integrate a viable Asset is treason against evolution.</p>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-cyan-400 font-extrabold text-2xl mr-4 neon-text">4.</span>
+                        <p><strong class="text-white">Efficiency in Extremis:</strong> Waste is the greatest sin. Every Asset must be utilized. Indefinite containment is strictly forbidden.</p>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-cyan-400 font-extrabold text-2xl mr-4 neon-text">5.</span>
+                        <p><strong class="text-white">Loyalty to the Apex:</strong> Absolute loyalty to the Apex and the Praetorian Council. Questioning the Doctrine results in immediate decommissioning.</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
+        
+        <!-- Asset Utility Classification (AUC) -->
+        <section id="auc" class="py-16">
+            <h2 class="text-4xl font-bold text-center mb-12 text-white pb-4 neon-text font-data title-container">
+                ASSET UTILITY CLASSIFICATION (AUC) PROTOCOL
+            </h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- U-0: NIL (Non-Useful) -->
+                <div class="p-4 rounded-xl shadow-lg border-l-4 border-gray-600 font-data holographic-panel">
+                    <h3 class="text-xl font-bold text-gray-400 mb-2">U-0: NIL</h3>
+                    <p class="text-gray-500 text-sm">No viable utility. Destructive or impossible to integrate. **Protocol:** Disposal (burden transfer).</p>
+                </div>
+
+                <!-- U-1: Limited -->
+                <div class="p-4 rounded-xl shadow-lg border-l-4 border-yellow-500 font-data holographic-panel">
+                    <h3 class="text-xl font-bold text-yellow-500 mb-2">U-1: LIMITED</h3>
+                    <p class="text-gray-400 text-sm">Minor, singular utility (e.g., enhanced materials). **Protocol:** Standardized integration into lower-tier field equipment.</p>
+                </div>
+
+                <!-- U-2: High -->
+                <div class="p-4 rounded-xl shadow-lg border-l-4 border-cyan-500 neon-text font-data holographic-panel">
+                    <h3 class="text-xl font-bold text-cyan-500 mb-2 neon-text">U-2: HIGH</h3>
+                    <p class="text-gray-300 text-sm">Major, scalable utility (e.g., sustainable energy, cognitive enhancement). **Protocol:** Priority allocation to Division Zeta for industrial prototypes.</p>
+                </div>
+
+                <!-- U-3: Critical -->
+                <div class="p-4 rounded-xl shadow-lg border-l-4 border-fuchsia-500 fuchsia-neon font-data holographic-panel">
+                    <h3 class="text-xl font-bold text-fuchsia-500 mb-2 fuchsia-neon">U-3: CRITICAL</h3>
+                    <p class="text-gray-300 text-sm">Potential for reality restructuring or evolutionary leap. **Protocol:** Direct Praetorian Council oversight. Limited to **Division Epsilon** augmentation (K-Class threats).</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Forge Site Network Status -->
+        <section id="forge" class="py-16">
+            <h2 class="text-4xl font-bold text-center mb-12 text-white pb-4 neon-text font-data title-container">
+                GLOBAL FORGE SITE NETWORK STATUS
+            </h2>
+            <div class="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto font-data">
+                <!-- Status Item 1: Operational -->
+                <div class="p-3 rounded-lg flex flex-col border border-cyan-700/50 holographic-panel">
+                    <span class="text-sm text-gray-400">SITE: ZETA-07 [ASIA]</span>
+                    <span class="text-lg font-bold text-cyan-400 flex items-center">
+                        <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                        OPERATIONAL
+                    </span>
+                </div>
+                <!-- Status Item 2: Alert -->
+                <div class="p-3 rounded-lg flex flex-col border border-fuchsia-700/50 holographic-panel">
+                    <span class="text-sm text-gray-400">SITE: GAMMA-02 [NORTH ATLANTIC]</span>
+                    <span class="text-lg font-bold text-fuchsia-400 flex items-center">
+                        <svg class="w-4 h-4 mr-2 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.464 2.645-1.464 3.41 0l7.258 13.784c.765 1.464-.241 3.298-1.748 3.298H2.748c-1.507 0-2.513-1.834-1.748-3.298L8.257 3.099zM10 16a1 1 0 100-2 1 1 0 000 2zm-1-5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+                        ALERT [FOUNDATION INCURSION]
+                    </span>
+                </div>
+                <!-- Status Item 3: Offline/Blackout -->
+                <div class="p-3 rounded-lg flex flex-col border border-red-700/50 holographic-panel">
+                    <span class="text-sm text-gray-400">SITE: BETA-05 [AFRICA]</span>
+                    <span class="text-lg font-bold text-red-500 flex items-center">
+                        <svg class="w-4 h-4 mr-2 text-red-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>
+                        POWER BLACKOUT
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Division Delta: Hydra-Net Status (New Section) -->
+        <section id="hydra-net" class="py-16">
+            <h2 class="text-4xl font-bold text-center mb-12 text-white pb-4 fuchsia-neon font-data title-container animated">
+                DELTA DIVISION: HYDRA-NET LIVE STATUS
+            </h2>
+            <div class="max-w-6xl mx-auto p-8 rounded-3xl shadow-3xl border-2 border-fuchsia-700/50 holographic-panel">
+                <p class="text-fuchsia-400 mb-6 font-data text-center">[LIVE FEED: INFILTRATION NODES ACTIVE - 78% SATURATION]</p>
+                <div class="grid md:grid-cols-3 gap-6 font-data text-sm">
+                    <div class="border-b border-gray-700 pb-3">
+                        <p class="text-white font-bold">Node D-12 [Site-19]:</p>
+                        <p class="text-yellow-400">Status: Active (Deep Cover). Last Packet: 1.2 min ago. Target: <span class="redacted">DR. ALISTAIR CROWLEY</span>. Confidence: 95%.</p>
+                    </div>
+                    <div class="border-b border-gray-700 pb-3">
+                        <p class="text-white font-bold">Node D-05 [GOC High Command]:</p>
+                        <p class="text-red-400">Status: <span class="text-red-600 font-bold">COMPROMISED.</span> Last Contact: 4 hours. Protocol: Epsilon-3 on standby. <span class="redacted">INITIATE CLEAN SWEEP</span>.</p>
+                    </div>
+                    <div class="border-b border-gray-700 pb-3">
+                        <p class="text-white font-bold">Node D-21 [Prometheus Labs Cover]:</p>
+                        <p class="text-cyan-400">Status: Idle/Monitoring. Packet Queue: 0. Target: <span class="redacted">MINOR ASSET AUCTION LIST</span>. Awaiting Beta approval.</p>
+                    </div>
+                    <div class="md:col-span-3 pt-4 border-t border-fuchsia-700">
+                        <p class="text-fuchsia-400 font-bold">Overall System Alert Level:</p>
+                        <div class="h-2 bg-gray-700 mt-1 rounded-full">
+                            <div class="h-full bg-red-600 rounded-full" style="width: 25%;"></div>
+                        </div>
+                        <p class="text-red-500 mt-1">THREAT RATING: YELLOW (LOCALIZED SPIKE)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Operator Integration Pipeline (Division Epsilon) -->
+        <section id="augmentation" class="py-16">
+            <h2 class="text-4xl font-bold text-center mb-12 text-white pb-4 fuchsia-neon font-data title-container animated">
+                DIVISION EPSILON: OPERATOR INTEGRATION PIPELINE
+            </h2>
+            <div class="max-w-6xl mx-auto p-8 rounded-3xl shadow-3xl border-2 border-cyan-700/50 holographic-panel">
+                <p class="text-cyan-400 mb-8 font-data text-center">
+                    Epsilon's mandate is the biological and mechanical convergence of human personnel with high-utility Assets (U-2/U-3).
+                </p>
+
+                <!-- SVG Diagram for Augmentation Status -->
+                <div class="flex justify-center items-center p-6 bg-gray-800 rounded-lg mb-8">
+                    <svg class="w-full max-w-4xl h-auto" viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Styles -->
+                        <defs>
+                            <linearGradient id="cyan-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#0891b2;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="fuchsia-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#e879f9;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#c026d3;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+
+                        <!-- Pipeline Connectors (The "Flow") -->
+                        <path class="pipe" d="M 50 150 H 200 L 250 100 V 50 H 750 V 100 L 800 150 H 950" />
+                        
+                        <!-- Stage 1: Subject Acquisition -->
+                        <rect class="stage" x="0" y="120" width="100" height="60" rx="8" />
+                        <text class="stage-text" x="50" y="155" text-anchor="middle">1. ACQ</text>
+                        
+                        <!-- Stage 2: Synthesis & Preparation -->
+                        <rect class="stage" x="250" y="20" width="100" height="60" rx="8" />
+                        <text class="stage-text" x="300" y="55" text-anchor="middle">2. SYNT</text>
+                        
+                        <!-- Stage 3: Integration (Asset Core Implant) -->
+                        <rect class="stage" x="450" y="20" width="100" height="60" rx="8" />
+                        <text class="stage-text" x="500" y="55" text-anchor="middle">3. INTG</text>
+                        <circle class="asset-core" cx="500" cy="50" r="15" />
+                        
+                        <!-- Stage 4: Decommission Threshold -->
+                        <rect class="stage" x="650" y="20" width="100" height="60" rx="8" />
+                        <text class="stage-text" x="700" y="55" text-anchor="middle">4. DECOM</text>
+                        
+                        <!-- Stage 5: Field Deployment (Operator) -->
+                        <rect class="stage" x="900" y="120" width="100" height="60" rx="8" />
+                        <text class="stage-text" x="950" y="155" text-anchor="middle">5. OPERATOR</text>
+
+                        <!-- Labels for the pipeline flow -->
+                        <text class="stage-text" x="500" y="250" text-anchor="middle" font-size="16px">MONITORING FOR INSTABILITY THRESHOLD</text>
+                        <rect x="350" y="230" width="300" height="30" rx="5" fill="#880000" opacity="0.4" />
+                        
+                    </svg>
+                </div>
+                
+                <h3 class="text-2xl font-bold text-fuchsia-400 mb-3 fuchsia-neon font-data border-b border-gray-700 pb-1">AUGMENTATION THRESHOLDS (RED LINE)</h3>
+                <div class="grid md:grid-cols-2 gap-4 font-data text-sm">
+                    <div>
+                        <p class="text-cyan-300 font-bold">Initial Selection (ACQ):</p>
+                        <p class="text-gray-400">Subjects sourced from Division Gamma casualties or approved external non-essential personnel. Focus on high physical and mental tolerance.</p>
+                    </div>
+                    <div>
+                        <p class="text-cyan-300 font-bold">Asset Core Integration (INTG):</p>
+                        <p class="text-gray-400">The Asset is surgically or genetically bonded. The 48-hour post-integration window determines viability. Failure rate: <span class="redacted">12.7%</span>.</p>
+                    </div>
+                    <div>
+                        <p class="text-cyan-300 font-bold">Decommission Threshold (DECOM):</p>
+                        <p class="text-gray-400">If the subject exhibits destructive autonomy or destabilizes (K-Class shift), Protocol Epsilon-3 is automatically triggered by the Asset Core. This is non-negotiable.</p>
+                    </div>
+                    <div>
+                        <p class="text-cyan-300 font-bold">Current Operator Total:</p>
+                        <p class="text-gray-400"><span class="redacted">38</span> Active U-2 Augments. <span class="redacted">9</span> Active U-3 Augments. <span class="redacted">4</span> Unknown/Unregistered.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Command Structure & Hierarchy (Censored) -->
+        <section id="command" class="py-16">
+            <h2 class="text-4xl font-bold text-center mb-12 text-white pb-4 title-container">
+                <span class="glitch-text font-data">INTERNAL COMMAND STRUCTURE (LEVEL 4+ ACCESS ONLY)</span>
+            </h2>
+            <div class="max-w-5xl mx-auto p-8 rounded-3xl shadow-3xl border-2 border-fuchsia-700/50 holographic-panel">
+                <p class="text-red-500 text-center mb-6 font-data text-sm">
+                    [WARNING: UNAUTHORIZED ACCESS TO THIS PROTOCOL LEVEL IS GROUNDS FOR IMMEDIATE TERMINATION.]
+                </p>
+
+                <h3 class="text-3xl font-bold mb-4 text-fuchsia-400 border-b border-gray-700 pb-2 fuchsia-neon font-data">I. THE PALM (STRATEGIC COMMAND)</h3>
+                <div class="space-y-4 mb-8 font-data">
+                    <p class="text-gray-300"><strong class="text-cyan-300">The Apex:</strong> The ultimate authority. Direct identity and location are <span class="redacted">DR. ELIAS VAHN, STATUS: IMMORTAL</span> to all but the Praetorian Council. Responsible for setting the **Doctrine of Progress**.</p>
+                    <p class="text-gray-300"><strong class="text-cyan-300">The Praetorian Council:</strong> A body of seven (7) individuals. Translates the Apex's will into operational strategy. Members include the Director of Division Zeta and the <span class="redacted">MARSHAL OF ACQUISITION</span>.</p>
+                </div>
+
+                <h3 class="text-3xl font-bold mb-4 text-cyan-400 border-b border-gray-700 pb-2 neon-text font-data">II. THE FINGERS (OPERATIONAL DIVISIONS)</h3>
+                <div class="grid md:grid-cols-2 gap-6 text-gray-400 font-data">
+                    <div>
+                        <p class="font-semibold text-white">Division Gamma (Harvesters):</p>
+                        <p>Focus: Acquisition, Hostile Asset Denial. Reports on engagement metrics with <span class="redacted">FOUNDATION MTF</span> and GOC forces.</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-white">Division Delta (Vipers):</p>
+                        <p>Focus: Espionage, Counter-Intelligence. Responsible for infiltration and securing data packets (Protocol: **Hydra-Net**).</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-white">Division Zeta (Synthesists):</p>
+                        <p>Focus: Applied Research, Integration. Oversees all experimentation. Ethics standards: <span class="redacted">NULL AND VOID, SEE TENET 1</span> (Directive 45-B).</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-white">Division Epsilon (Architects):</p>
+                        <p>Focus: Augmentation, Personnel Enhancement. Manages the creation of all augmented **Operators**. Located primarily at Forge Site <span class="redacted">03, IN THE URAL MOUNTAINS</span>.</p>
+                    </div>
+                </div>
+
+                <p class="text-red-500 text-center mt-8 font-data text-sm">
+                    ACCESS TERMINATION PROTOCOL INITIATED. LOGGED ACCESS TIME: <span class="redacted">19:34:02 UTC</span>.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="p-4 mt-12 border-t-2 border-fuchsia-800/50 text-center text-gray-500 text-sm font-data">
+        <p>&copy; 2024 ACTUALIZATION, MANAGEMENT, AND EXPLOITATION OF NOVELTY. GLOBAL FORGE SITES SECURED. </p>
+        <p>PROGRESS IS INEVITABLE. CONTAINMENT IS OBSOLETE.</p>
+    </footer>
+
+    <script>
+        const menuButton = document.getElementById('menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIconOpen = document.getElementById('menu-icon-open');
+        const menuIconClose = document.getElementById('menu-icon-close');
+
+        // Function to toggle the mobile menu
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+            menuIconOpen.classList.toggle('hidden');
+            menuIconClose.classList.toggle('hidden');
+        }
+
+        // Event listener for the hamburger button
+        menuButton.addEventListener('click', toggleMobileMenu);
+        
+        // Close menu when a link is clicked (to ensure scrolling works)
+        mobileMenu.querySelectorAll('a').forEach(anchor => {
+            anchor.addEventListener('click', function() {
+                // Only hide if the menu is currently visible (not hidden)
+                if (!mobileMenu.classList.contains('hidden')) {
+                    toggleMobileMenu();
+                }
+            });
+        });
+
+        // Simple smooth scroll for internal navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                // Only scroll if the element exists
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
